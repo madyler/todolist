@@ -24,6 +24,7 @@ test('mulSalary', () => {
     const result = mulSalary(salary, coefficient)
     expect(result).toBe(840)
 })
+
 test('divSalary', () => {
     const salary: number = 700
     const coefficient: number = 0.9
