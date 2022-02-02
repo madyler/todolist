@@ -1,6 +1,5 @@
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC, tasksReducer} from './tasks-reducers'
 import {TasksStateType} from "../App";
-import {keys} from "@material-ui/core/styles/createBreakpoints";
 import {addTodolistAC, removeTodolistAC} from "./todolists-reducer";
 
 test ('correct task should be deleted from correct array',() => {
@@ -21,7 +20,7 @@ test ('correct task should be deleted from correct array',() => {
 
     expect(endState['todolistId1'].length).toBe(3)
     expect(endState['todolistId2'].length).toBe(2)
-    expect(endState['todolistId2'].every(t => t.id != '2')).toBeTruthy()
+    expect(endState['todolistId2'].every(t => t.id !== '2')).toBeTruthy()
 })
 
 test('correct task should be added to correct array', () => {

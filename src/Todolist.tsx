@@ -1,4 +1,4 @@
-import React, {ChangeEvent, useReducer} from 'react';
+import React, {ChangeEvent} from 'react';
 import {FilterValuesType} from './App';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
@@ -27,7 +27,6 @@ type PropsType = {
 }
 
 export function Todolist(props: PropsType) {
-   // let dispatch //= useReducer()
     const addTask = (title: string) => {
         props.addTask(title, props.id);
     }
