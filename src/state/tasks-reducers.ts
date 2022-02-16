@@ -2,6 +2,7 @@ import {TasksStateType} from "../App";
 import {v1} from "uuid";
 import {AddTodoListAT, RemoveTodoListAT} from "./todolists-reducer";
 
+
 export type RemoveTaskAT = {
     type: 'REMOVE-TASK'
     todolistId: string
@@ -27,7 +28,9 @@ export type ChangeTaskTitleAT = {
 type ActionType = RemoveTaskAT | AddTaskAT |
     ChangeTaskStatusAT | ChangeTaskTitleAT | AddTodoListAT | RemoveTodoListAT
 
-export const tasksReducer = (state: TasksStateType, action: ActionType): TasksStateType => {
+const initialState: TasksStateType = {}
+
+export const tasksReducer = (state: TasksStateType = initialState, action: ActionType): TasksStateType => {
     switch (action.type) {
         case "REMOVE-TASK":
             let todolistTasks = state[action.todolistId];
@@ -54,7 +57,8 @@ export const tasksReducer = (state: TasksStateType, action: ActionType): TasksSt
             delete state[action.id]
             return {...state}
         default:
-            throw new Error('incorrect task reducer action type')
+            return state
+            //throw new Error('incorrect task reducer action type')
     }
 }
 

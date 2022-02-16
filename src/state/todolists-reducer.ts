@@ -22,26 +22,29 @@ type ChangeTodoListTitleAT = {
 }
 export type ActionType = RemoveTodoListAT | AddTodoListAT | ChangeTodoListFilterAT | ChangeTodoListTitleAT
 
-export const todolistsReducer = (todolists: Array<TodolistType>, action: ActionType): Array<TodolistType> => {
+const initialState: Array<TodolistType> = []
+
+export const todolistsReducer = (state: Array<TodolistType> = initialState, action: ActionType): Array<TodolistType> => {
     switch (action.type) {
         case 'REMOVE-TODOLIST':
-            return todolists.filter(tl => tl.id !== action.id)
+            return state.filter(tl => tl.id !== action.id)
         case "ADD-TODOLIST":
-            return [{id: action.todolistId, title: action.title, filter: 'all'}, ...todolists];
+            return [{id: action.todolistId, title: action.title, filter: 'all'}, ...state];
         case "CHANGE-TODOLIST-FILTER":
-            let todolist = todolists.find(tl => tl.id === action.id);
+            let todolist = state.find(tl => tl.id === action.id);
             if (todolist) {
                 todolist.filter = action.filter;
             }
-            return [...todolists]
+            return [...state]
         case "CHANGE-TODOLIST-TITLE":
-            let todolist1 = todolists.find(tl => tl.id === action.id);
+            let todolist1 = state.find(tl => tl.id === action.id);
             if (todolist1) {
                 todolist1.title = action.title;
             }
-            return [...todolists]
+            return [...state]
         default:
-            throw new Error('incorrect todolists reducer action type')
+            return state
+        //throw new Error('incorrect todolists reducer action type')
     }
 }
 
