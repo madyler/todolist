@@ -44,7 +44,7 @@ export const todolistsReducer = (state: Array<TodolistType> = initialState, acti
             return [...state]
         default:
             return state
-        //throw new Error('incorrect todolists reducer action type')
+        //throw new Error('incorrect todoLists reducer action type')
     }
 }
 
