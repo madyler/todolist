@@ -32,30 +32,40 @@ const initialState: TasksStateType = {}
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionType): TasksStateType => {
     switch (action.type) {
-        case "REMOVE-TASK":
+        case "REMOVE-TASK": {
             let todolistTasks = state[action.todolistId];
             state[action.todolistId] = todolistTasks.filter(t => t.id !== action.taskId);
             return {...state}
-        case "ADD-TASK":
-            let todolistTasks1 = state[action.todolistId]
-            state[action.todolistId] = [{id: v1(), title: action.taskTitle, isDone: false}, ...todolistTasks1]
+        }
+        case "ADD-TASK": {
+            let todolistTasks = state[action.todolistId]
+            state[action.todolistId] = [{id: v1(), title: action.taskTitle, isDone: false}, ...todolistTasks]
             return {...state}
+        }
         case "CHANGE-STATUS":
-            let task = state[action.todolistId].find(t => t.id === action.taskId)
-            if (task) task.isDone = action.isDone;
-            return {...state}
-        case "CHANGE-TITLE":
-            let todolistTasks3 = state[action.todolistId]
-            let task1 = todolistTasks3.find(t => t.id === action.taskId)
-            if (task1) task1.title = action.taskTitle
-            return {...state}
-        case 'ADD-TODOLIST':
+            let todolistTasks = state[action.todolistId]
+            state[action.todolistId] = todolistTasks
+                .map(t => t.id === action.taskId
+                    ? {...t, isDone: action.isDone}
+                    : t)
+            return ({...state})
+        case "CHANGE-TITLE": {
+            let todolistTasks = state[action.todolistId]
+            state[action.todolistId] = todolistTasks
+                .map( t => t.id === action.taskId
+                ?{...t, title: action.taskTitle}
+                : t)
+            return ({...state})
+        }
+        case 'ADD-TODOLIST': {
             const stateCopy = {...state}
             stateCopy[action.todolistId] = []
             return stateCopy//{...state, [action.todolistId]: []}
-        case 'REMOVE-TODOLIST':
+        }
+        case 'REMOVE-TODOLIST': {
             delete state[action.id]
             return {...state}
+        }
         default:
             return state
             //throw new Error('incorrect task reducer action type')
