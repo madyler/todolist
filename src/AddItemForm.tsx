@@ -4,6 +4,7 @@ import {Button, TextField} from "@material-ui/core";
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
+    key: string
 }
 
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {

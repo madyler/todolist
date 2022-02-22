@@ -1,5 +1,5 @@
 import React, {useCallback} from 'react';
-import {FilterValuesType} from './App';
+import {FilterValuesType} from './AppWithRedux';
 import {AddItemForm} from './AddItemForm';
 import {EditableSpan} from './EditableSpan';
 import {IconButton} from "@material-ui/core";
@@ -56,7 +56,7 @@ export const Todolist = React.memo((props: PropsType) => {
             </IconButton>
 
         </h3>
-        <AddItemForm addItem={addTask}/>
+        <AddItemForm addItem={addTask} key={props.id}/>
         <div>
             <ButtonGroup>
                 <Button variant={props.filter === 'all' ? "outlined" : "contained"} color="success"

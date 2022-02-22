@@ -13,8 +13,8 @@ import {
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducers";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import App from "./App";
 import {keys} from "@material-ui/core/styles/createBreakpoints";
+import {v1} from "uuid";
 
 export type FilterValuesType = "all" | "active" | "completed";
 export type TodolistType = {
@@ -69,7 +69,7 @@ export const AppWithRedux = React.memo(() => {
             <ButtonAppBar/>
             <Container fixed>
                 <Grid container style={{padding:'20px'}}>
-                    <AddItemForm addItem={addTodolist}/>
+                    <AddItemForm addItem={addTodolist} key={v1()}/>
                 </Grid>
 
                 <Grid container spacing={3}>
