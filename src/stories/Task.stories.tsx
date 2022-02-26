@@ -1,7 +1,5 @@
 import React from 'react';
 import {ComponentMeta} from "@storybook/react";
-import {AddItemForm} from "../AddItemForm";
-import {v1} from "uuid";
 import {action} from "@storybook/addon-actions";
 import {Task} from "../Task";
 
@@ -14,8 +12,23 @@ export default {
     }
 } as ComponentMeta<typeof Task>;
 
-//const callback = action("Button 'add' was pressed inside the form")
+const removeTaskStatusCallback = action("Task was removed")
+const changeTaskStatusStatusCallback = action("Task status was changed")
+const changeTaskTitleStatusCallback = action("Task title was changed")
 
 export const TaskBaseExample = (props: any) => {
-    return <Task task={} removeTask={} changeTaskStatus={} changeTaskTitle={} todolistId={}/>
+    return <>
+        <Task
+            task={{id: '1', isDone: true, title: 'CSS'}}
+            removeTask={removeTaskStatusCallback}
+            changeTaskStatus={changeTaskStatusStatusCallback}
+            changeTaskTitle={changeTaskTitleStatusCallback}
+            todolistId={'todolistID1'}/>
+        <Task
+            task={{id: '2', isDone: false, title: 'JS'}}
+            removeTask={removeTaskStatusCallback}
+            changeTaskStatus={changeTaskStatusStatusCallback}
+            changeTaskTitle={changeTaskTitleStatusCallback}
+            todolistId={'todolistID1'}/>
+    </>
 }

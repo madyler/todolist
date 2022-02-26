@@ -13,7 +13,6 @@ import {
 import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./state/tasks-reducers";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
-import {keys} from "@material-ui/core/styles/createBreakpoints";
 import {v1} from "uuid";
 
 export type FilterValuesType = "all" | "active" | "completed";
@@ -29,7 +28,7 @@ export type TasksStateType = {
 
 
 export const AppWithRedux = React.memo(() => {
-    console.log('App')
+
     const todoLists = useSelector<AppRootStateType, Array<TodolistType>>(state => state.todoLists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
@@ -75,7 +74,7 @@ export const AppWithRedux = React.memo(() => {
                 <Grid container spacing={3}>
                     {todoLists.map(tl => {
                         return <Grid item key={tl.id}>
-                            <Paper style={{padding: '10px'}}>
+                            <Paper style={{padding: '10px',  backgroundColor: "#E4EAF4"}}>
                                 <Todolist
                                     key={tl.id}
                                     id={tl.id}
