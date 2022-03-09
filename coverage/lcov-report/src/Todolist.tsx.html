@@ -254,7 +254,7 @@ import {Button, ButtonGroup} from "@mui/material";
 export type TaskType = {
     id: string
     title: string
-    isDone: boolean
+    status: TaskStatuses
 }
 &nbsp;
 type PropsType = {
@@ -264,7 +264,7 @@ type PropsType = {
     removeTask: (taskId: string, todolistId: string) =&gt; void
     changeFilter: (value: FilterValuesType, todolistId: string) =&gt; void
     addTask: (title: string, todolistId: string) =&gt; void
-    changeTaskStatus: (id: string, isDone: boolean, todolistId: string) =&gt; void
+    changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) =&gt; void
     removeTodolist: (id: string) =&gt; void
     changeTodolistTitle: (id: string, newTitle: string) =&gt; void
     filter: FilterValuesType

@@ -25,7 +25,7 @@ export const TaskBaseExample = (props: any) => {
             changeTaskTitle={changeTaskTitleStatusCallback}
             todolistId={'todolistID1'}/>
         <Task
-            task={{id: '2', isDone: false, title: 'JS'}}
+            task={{id: '2', status: TaskStatuses.New, title: 'JS'}}
             removeTask={removeTaskStatusCallback}
             changeTaskStatus={changeTaskStatusStatusCallback}
             changeTaskTitle={changeTaskTitleStatusCallback}

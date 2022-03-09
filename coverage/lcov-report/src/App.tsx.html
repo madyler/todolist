@@ -411,7 +411,7 @@ function <span class="fstat-no" title="function not covered" >App(</span>) {
 <span class="cstat-no" title="statement not covered" >        setTasks({...tasks});</span>
     }
     function <span class="fstat-no" title="function not covered" >addTask(</span>title: string, todolistId: string) {
-        let task = <span class="cstat-no" title="statement not covered" >{id: v1(), title: title, isDone: false};</span>
+        let task = <span class="cstat-no" title="statement not covered" >{id: v1(), title: title, status: TaskStatuses.New};</span>
         //достанем нужный массив по todolistId:
         let todolistTasks = <span class="cstat-no" title="statement not covered" >tasks[todolistId];</span>
         // перезапишем в этом объекте массив для нужного тудулиста копией, добавив в начало новую таску:
@@ -426,7 +426,7 @@ function <span class="fstat-no" title="function not covered" >App(</span>) {
 <span class="cstat-no" title="statement not covered" >            setTodolists([...todolists])</span>
         }
     }
-    function <span class="fstat-no" title="function not covered" >changeStatus(</span>id: string, isDone: boolean, todolistId: string) {
+    function <span class="fstat-no" title="function not covered" >changeStatus(</span>id: string, status: TaskStatuses, todolistId: string) {
         //достанем нужный массив по todolistId:
         let todolistTasks = <span class="cstat-no" title="statement not covered" >tasks[todolistId];</span>
         // найдём нужную таску:

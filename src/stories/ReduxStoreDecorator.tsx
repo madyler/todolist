@@ -5,6 +5,7 @@ import {combineReducers, createStore} from "redux";
 import {tasksReducer} from "../state/tasks-reducers";
 import {todolistsReducer} from "../state/todolists-reducer";
 import {v1} from "uuid";
+import {TaskStatuses} from "../api/todolists-api";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
@@ -18,12 +19,12 @@ const InitialGlobalState = {
     ],
     tasks: {
         ['todolist1']: [
-            {id: v1(), title: 'HTML&CSS', isDone: false},
-            {id: v1(), title: 'JS', isDone: false},
+            {id: v1(), title: 'HTML&CSS', status: TaskStatuses.New},
+            {id: v1(), title: 'JS', status: TaskStatuses.New},
         ],
         ['todolist2']: [
-            {id: v1(), title: 'Milk', isDone: false},
-            {id: v1(), title: 'React book', isDone: false},
+            {id: v1(), title: 'Milk', status: TaskStatuses.New},
+            {id: v1(), title: 'React book', status: TaskStatuses.New},
         ]
     }
 }
