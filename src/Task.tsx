@@ -16,14 +16,21 @@ export const Task: React.FC<PropType> = React.memo((props) => {
     const onClickHandler = () => props.removeTask(props.task.id, props.todolistId)
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         let newIsDoneValue = e.currentTarget.checked;
-        props.changeTaskStatus(props.task.id, newIsDoneValue, props.todolistId);
+        props.changeTaskStatus(props.task.id,
+            newIsDoneValue
+                ? TaskStatuses.Completed
+                : TaskStatuses.New
+            , props.todolistId);
     }
     const onTitleChangeHandler = useCallback((newValue: string) => {
         props.changeTaskTitle(props.task.id, newValue, props.todolistId);
     }, [props.task.id, props.todolistId, props.changeTaskTitle])
+    const x = () => {
+
+    }
 
     return <li key={props.task.id} className={props.task.status === 2 ? "is-done" : ""}>
-        <input type="checkbox" onChange={onChangeHandler} checked={props.task.isDone}/>
+        <input type="checkbox" onChange={onChangeHandler} checked={props.task.status === 2 ? true : false}/>
         <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
         <IconButton aria-label="delete" onClick={onClickHandler}>
             <Delete/>
