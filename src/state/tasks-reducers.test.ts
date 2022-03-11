@@ -58,8 +58,8 @@ test('status of specified task should be changed', () => {
     const action = changeTaskStatusAC('todolistId2', '2', TaskStatuses.New)
     const endState = tasksReducer(startState, action)
 
-    expect(endState['todolistId2'][1].status).toBe(TaskStatuses.Completed)
-    expect(endState['todolistId1'][1].status).toBeTruthy()
+    expect(endState['todolistId2'][1].status).toBe(TaskStatuses.New)
+    expect(endState['todolistId1'][1].status).toBe(TaskStatuses.Completed)
 
 })
 
