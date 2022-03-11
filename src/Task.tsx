@@ -12,7 +12,7 @@ type PropType = {
     todolistId: string
 }
 export const Task: React.FC<PropType> = React.memo((props) => {
-    console.log('Task')
+
     const onClickHandler = () => props.removeTask(props.task.id, props.todolistId)
     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
         let newIsDoneValue = e.currentTarget.checked;
@@ -29,8 +29,8 @@ export const Task: React.FC<PropType> = React.memo((props) => {
 
     }
 
-    return <li key={props.task.id} className={props.task.status === 2 ? "is-done" : ""}>
-        <input type="checkbox" onChange={onChangeHandler} checked={props.task.status === 2 ? true : false}/>
+    return <li key={props.task.id} className={props.task.status === TaskStatuses.Completed ? "is-done" : ""}>
+        <input type="checkbox" onChange={onChangeHandler} checked={props.task.status === TaskStatuses.Completed}/>
         <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
         <IconButton aria-label="delete" onClick={onClickHandler}>
             <Delete/>
