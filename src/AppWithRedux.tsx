@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useEffect} from 'react';
 import './App.css';
 import {Todolist} from './Todolist';
 import {AddItemForm} from './AddItemForm';
@@ -8,6 +8,7 @@ import {
     addTodolistAC,
     changeTodolistFilterAC,
     changeTodolistTitleAC,
+    fetchTodolistsTC,
     FilterValuesType,
     removeTodolistAC,
     TodolistDomainType
@@ -30,48 +31,53 @@ export const AppWithRedux = React.memo(() => {
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        dispatch(fetchTodolistsTC())
+    }, [])
+
+
     const removeTask = useCallback((id: string, todolistId: string) => {
         const action = removeTaskAC(todolistId, id)
         dispatch(action)
-    },[dispatch])
+    }, [dispatch])
     const addTask = useCallback((title: string, todolistId: string) => {
         const action = addTaskAC(todolistId, title)
         dispatch(action)
-    },[dispatch])
+    }, [dispatch])
     const changeStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
         dispatch(changeTaskStatusAC(todolistId, id, status))
-    },[dispatch])
+    }, [dispatch])
     const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
         dispatch(changeTaskTitleAC(todolistId, id, newTitle))
-    },[dispatch])
+    }, [dispatch])
 
     const removeTodolist = useCallback((id: string) => {
         let action = removeTodolistAC(id)
         dispatch(action)
-    },[dispatch])
+    }, [dispatch])
     const addTodolist = useCallback((title: string) => {
         let action = addTodolistAC(title)
         dispatch(action)
-    },[dispatch])
+    }, [dispatch])
     const changeTodolistTitle = useCallback((id: string, title: string) => {
         dispatch(changeTodolistTitleAC(id, title))
-    },[dispatch])
+    }, [dispatch])
     const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
         dispatch(changeTodolistFilterAC(todolistId, value))
-    },[dispatch])
+    }, [dispatch])
 
     return (
         <div className="App">
             <ButtonAppBar/>
             <Container fixed>
-                <Grid container style={{padding:'20px'}}>
+                <Grid container style={{padding: '20px'}}>
                     <AddItemForm addItem={addTodolist} key={v1()}/>
                 </Grid>
 
                 <Grid container spacing={3}>
                     {todoLists.map(tl => {
                         return <Grid item key={tl.id}>
-                            <Paper style={{padding: '10px',  backgroundColor: "#E4EAF4"}}>
+                            <Paper style={{padding: '10px', backgroundColor: "#E4EAF4"}}>
                                 <Todolist
                                     key={tl.id}
                                     id={tl.id}
