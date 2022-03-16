@@ -17,7 +17,7 @@ import {addTaskAC, changeTaskStatusAC, changeTaskTitleAC, removeTaskAC} from "./
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "./state/store";
 import {v1} from "uuid";
-import {TaskStatuses, TaskType} from "./api/todolists-api";
+import {TaskStatuses, TaskType, todolistsApi} from "./api/todolists-api";
 
 
 export type TasksStateType = {
@@ -37,30 +37,52 @@ export const AppWithRedux = React.memo(() => {
 
 
     const removeTask = useCallback((id: string, todolistId: string) => {
-        const action = removeTaskAC(todolistId, id)
-        dispatch(action)
+        todolistsApi.deleteTask(todolistId, id)
+            .then(res=>{
+                dispatch(removeTaskAC(todolistId, id))
+            })
     }, [dispatch])
+
     const addTask = useCallback((title: string, todolistId: string) => {
-        const action = addTaskAC(todolistId, title)
-        dispatch(action)
+        todolistsApi.createTask(todolistId, title)
+            .then(res=>{
+                console.log(res.data)
+                dispatch(addTaskAC(todolistId, 'res.data.data', title))
+            })
     }, [dispatch])
+
     const changeStatus = useCallback((id: string, status: TaskStatuses, todolistId: string) => {
         dispatch(changeTaskStatusAC(todolistId, id, status))
     }, [dispatch])
+
     const changeTaskTitle = useCallback((id: string, newTitle: string, todolistId: string) => {
-        dispatch(changeTaskTitleAC(todolistId, id, newTitle))
+        todolistsApi.updateTask(todolistId, id, newTitle)
+            .then(res=>{
+                console.log(todolistId, id, newTitle)
+                dispatch(changeTaskTitleAC(todolistId, id, newTitle))
+            })
     }, [dispatch])
 
+    //---------------------------------------------------------------------------------------------------------------
+
     const removeTodolist = useCallback((id: string) => {
-        let action = removeTodolistAC(id)
-        dispatch(action)
+        todolistsApi.deleteTodolist(id)
+            .then(res=>{
+                dispatch(removeTodolistAC(id))
+            })
     }, [dispatch])
     const addTodolist = useCallback((title: string) => {
-        let action = addTodolistAC(title)
-        dispatch(action)
+        todolistsApi.createTodolist(title)
+            .then(res=>{
+                console.log(res.data.data.item.id)
+                dispatch(addTodolistAC(title, res.data.data.item.id))
+            })
     }, [dispatch])
     const changeTodolistTitle = useCallback((id: string, title: string) => {
-        dispatch(changeTodolistTitleAC(id, title))
+        todolistsApi.updateTodolistTitle(id, title)
+            .then(res=>{
+                dispatch(changeTodolistTitleAC(id, title))
+            })
     }, [dispatch])
     const changeFilter = useCallback((value: FilterValuesType, todolistId: string) => {
         dispatch(changeTodolistFilterAC(todolistId, value))

@@ -1,7 +1,6 @@
 import {TasksStateType} from "../AppWithRedux";
-import {v1} from "uuid";
 import {TaskPriorities, TaskStatuses, TaskType, todolistsApi} from "../api/todolists-api";
-import {AddTodoListAT, RemoveTodoListAT, setTodolistAC, SetTodoListAT} from "./todolists-reducer";
+import {AddTodoListAT, RemoveTodoListAT, SetTodoListAT} from "./todolists-reducer";
 import {Dispatch} from "redux";
 
 
@@ -26,7 +25,7 @@ const initialState: TasksStateType = {}
 
 export const tasksReducer = (state: TasksStateType = initialState, action: ActionType): TasksStateType => {
     switch (action.type) {
-        case "SET-TASKS":{
+        case "SET-TASKS": {
             let copyState = {...state}
             copyState[action.todolistId] = action.tasks
             return copyState
@@ -47,9 +46,9 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
         case "ADD-TASK": {
             let todolistTasks = state[action.todolistId]
             state[action.todolistId] = [{
-                id: v1(), title: action.taskTitle, status: TaskStatuses.New,
+                id: action.taskId, title: action.taskTitle, status: TaskStatuses.New,
                 todoListId: action.todolistId, addedDate: '', completed: false, deadline: '', description: '',
-                order: 0, priority: TaskPriorities.Hi, startDate: ''
+                order: 0, priority: TaskPriorities.Low, startDate: ''
             }, ...todolistTasks]
             return {...state}
         }
@@ -87,8 +86,8 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
 export const removeTaskAC = (todolistId: string, taskId: string) =>
     ({type: 'REMOVE-TASK', todolistId, taskId} as const)
 
-export const addTaskAC = (todolistId: string, taskTitle: string) =>
-    ({type: "ADD-TASK", todolistId, taskTitle} as const)
+export const addTaskAC = (todolistId: string, taskId: string, taskTitle: string) =>
+    ({type: "ADD-TASK", todolistId, taskTitle, taskId} as const)
 
 export const changeTaskStatusAC = (todolistId: string, taskId: string, status: TaskStatuses) =>
     ({type: "CHANGE-STATUS", todolistId, taskId, status} as const)
