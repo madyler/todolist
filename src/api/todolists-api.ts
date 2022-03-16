@@ -25,6 +25,8 @@ export type ResponseType<D = {}> = {
     data: D
 }
 
+export type addTaskResponseType = ResponseType<{item: TaskType}> & {fieldsErrors: []}
+
 export type GetTasksResponseType = {
     error: string
     totalCount: number
@@ -71,6 +73,7 @@ type UpdateTaskModelType = {
 }
 
 
+
 export const todolistsApi = {
     getTodolists() {
         const promise = instance.get<TodolistType[]>('todo-lists')
@@ -98,7 +101,7 @@ export const todolistsApi = {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`)
     },
     createTask(todolistId: string, title: string) {
-        return instance.post<ResponseType>(`todo-lists/${todolistId}/tasks`, {title: title})
+        return instance.post<addTaskResponseType>(`todo-lists/${todolistId}/tasks`, {title: title})
     },
     updateTask(todolistId: string, taskId: string, title: string) {
         return instance.put<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`, {title: title})
