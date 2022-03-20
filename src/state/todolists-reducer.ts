@@ -1,6 +1,6 @@
-import {v1} from "uuid";
 import {todolistsApi, TodolistType} from "../api/todolists-api";
 import {Dispatch} from "redux";
+import {setAppErrorAC, setAppErrorAT, setAppStatusAC, setAppStatusAT} from "../app/app-reducer";
 
 
 export type ActionType =
@@ -10,6 +10,8 @@ export type ActionType =
     | ReturnType<typeof changeTodolistTitleAC>
     | AddTodoListAT
     | ReturnType<typeof setTodolistAC>
+    | setAppStatusAT
+    | setAppErrorAT
 
 export type AddTodoListAT = ReturnType<typeof addTodolistAC>
 export type RemoveTodoListAT = ReturnType<typeof removeTodolistAC>
@@ -69,35 +71,76 @@ export const setTodolistAC = (todolists: Array<TodolistType>) => ({type: "SET-TO
 
 
 export const fetchTodolistsTC = () => {
-  return (dispatch: Dispatch) => {
-      return todolistsApi.getTodolists()
-          .then((res) => {
-              dispatch(setTodolistAC(res.data))
-          })
-  }
+    return (dispatch: Dispatch<ActionType>) => {
+        dispatch(setAppStatusAC('loading'))
+        todolistsApi.getTodolists()
+            .then((res) => {
+                dispatch(setTodolistAC(res.data))
+            })
+            .catch((err)=>{
+                dispatch(setAppErrorAC(err[0]))
+            })
+            .finally(()=>{
+                dispatch(setAppStatusAC('succeeded'))
+            })
+    }
 }
-export const removeTodolistTC = (id:string) => {
-  return (dispatch: Dispatch) => {
-      return todolistsApi.deleteTodolist(id)
-          .then((res)=>{
-              dispatch(removeTodolistAC(id))
-          })
-  }
+export const removeTodolistTC = (id: string) => {
+    return (dispatch: Dispatch<ActionType>) => {
+        dispatch(setAppStatusAC('loading'))
+        todolistsApi.deleteTodolist(id)
+            .then((res) => {
+                if(res.data.resultCode === 0){
+                    dispatch(removeTodolistAC(id))
+                } else {
+                    dispatch(setAppErrorAC(res.data.messages[0]))
+                }
+            })
+            .catch((err)=>{
+                dispatch(setAppErrorAC(err[0]))
+            })
+            .finally(()=>{
+                dispatch(setAppStatusAC('succeeded'))
+            })
+    }
 }
-export const addTodolistTC = (title:string) => {
-  return (dispatch: Dispatch) => {
-      return  todolistsApi.createTodolist(title)
-          .then((res) => {
-              console.log(res.data.data.item.id)
-              dispatch(addTodolistAC(title, res.data.data.item.id))
-          })
-  }
+export const addTodolistTC = (title: string) => {
+    return (dispatch: Dispatch<ActionType>) => {
+        dispatch(setAppStatusAC('loading'))
+        todolistsApi.createTodolist(title)
+            .then((res) => {
+                if(res.data.resultCode === 0){
+                    dispatch(addTodolistAC(title, res.data.data.item.id))
+                } else {
+                    dispatch(setAppErrorAC(res.data.messages[0]))
+                }
+            })
+            .catch((err)=>{
+                debugger
+                console.log(err)
+                //dispatch(setAppErrorAC(err[0]))
+            })
+            .finally(()=>{
+                dispatch(setAppStatusAC('succeeded'))
+            })
+    }
 }
-export const changeTodolistTitleTC = (id: string, title:string) => {
-  return (dispatch: Dispatch) => {
-      return  todolistsApi.updateTodolistTitle(id, title)
-          .then((res) => {
-              dispatch(changeTodolistTitleAC(id, title))
-          })
-  }
+export const changeTodolistTitleTC = (id: string, title: string) => {
+    return (dispatch: Dispatch<ActionType>) => {
+        dispatch(setAppStatusAC('loading'))
+        todolistsApi.updateTodolistTitle(id, title)
+            .then((res) => {
+                if(res.data.resultCode === 0){
+                    dispatch(changeTodolistTitleAC(id, title))
+                } else {
+                    dispatch(setAppErrorAC(res.data.messages[0]))
+                }
+            })
+            .catch((err)=>{
+                dispatch(setAppErrorAC(err[0]))
+            })
+            .finally(()=>{
+                dispatch(setAppStatusAC('succeeded'))
+            })
+    }
 }

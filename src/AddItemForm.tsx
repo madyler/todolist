@@ -13,7 +13,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
     let [error, setError] = useState<boolean>(false)
 
     const addItem = () => {
-        if (title.trim() !== "") {
+        if (title.trim() !== ""){
             props.addItem(title);
             setTitle("");
         } else {

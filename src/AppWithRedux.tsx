@@ -15,9 +15,12 @@ import {
 } from "./state/todolists-reducer";
 import {addTaskTC, changeTaskStatusAC, changeTaskTitleTC, removeTaskTC} from "./state/tasks-reducers";
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "./state/store";
+import {AppRootStateType, useAppSelector} from "./state/store";
 import {v1} from "uuid";
 import {TaskStatuses, TaskType} from "./api/todolists-api";
+import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
+import {RequestStatusType} from "./app/app-reducer";
+import LinearProgress from '@mui/material/LinearProgress';
 
 
 export type TasksStateType = {
@@ -29,6 +32,8 @@ export const AppWithRedux = React.memo(() => {
 
     const todoLists = useSelector<AppRootStateType, Array<TodolistDomainType>>(state => state.todoLists)
     const tasks = useSelector<AppRootStateType, TasksStateType>(state => state.tasks)
+    const status = useAppSelector<RequestStatusType>(state => state.app.status)
+
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -70,37 +75,41 @@ export const AppWithRedux = React.memo(() => {
         dispatch(changeTodolistFilterAC(todolistId, value))
     }, [dispatch])
 
-    return (
-        <div className="App">
-            <ButtonAppBar/>
-            <Container fixed>
-                <Grid container style={{padding: '20px'}}>
-                    <AddItemForm addItem={addTodolist} key={v1()}/>
-                </Grid>
 
-                <Grid container spacing={3}>
-                    {todoLists.map(tl => {
-                        return <Grid item key={tl.id}>
-                            <Paper style={{padding: '10px', backgroundColor: "#E4EAF4"}}>
-                                <Todolist
-                                    key={tl.id}
-                                    id={tl.id}
-                                    title={tl.title}
-                                    tasks={tasks[tl.id]}
-                                    removeTask={removeTask}
-                                    changeFilter={changeFilter}
-                                    addTask={addTask}
-                                    changeTaskStatus={changeStatus}
-                                    filter={tl.filter}
-                                    removeTodolist={removeTodolist}
-                                    changeTaskTitle={changeTaskTitle}
-                                    changeTodolistTitle={changeTodolistTitle}
-                                />
-                            </Paper>
-                        </Grid>
-                    })}
-                </Grid>
-            </Container>
+    return (
+        <div>
+            <div className="App">
+                <ButtonAppBar/>
+                <Container fixed>
+                    {status === "loading" && <LinearProgress color={"secondary"}/>}
+                    <Grid container style={{padding: '20px'}}>
+                        <AddItemForm addItem={addTodolist} key={v1()}/>
+                    </Grid>
+                    <Grid container spacing={3}>
+                        {todoLists.map(tl => {
+                            return <Grid item key={tl.id}>
+                                <Paper style={{padding: '10px', backgroundColor: "#E4EAF4"}}>
+                                    <Todolist
+                                        key={tl.id}
+                                        id={tl.id}
+                                        title={tl.title}
+                                        tasks={tasks[tl.id]}
+                                        removeTask={removeTask}
+                                        changeFilter={changeFilter}
+                                        addTask={addTask}
+                                        changeTaskStatus={changeStatus}
+                                        filter={tl.filter}
+                                        removeTodolist={removeTodolist}
+                                        changeTaskTitle={changeTaskTitle}
+                                        changeTodolistTitle={changeTodolistTitle}
+                                    />
+                                </Paper>
+                            </Grid>
+                        })}
+                    </Grid>
+                </Container>
+            </div>
+            <ErrorSnackbar/>
         </div>
     );
 })

@@ -1,15 +1,17 @@
 import React from "react";
 import {Provider} from "react-redux";
-import {AppRootStateType, store} from "../state/store";
+import {AppRootStateType} from "../state/store";
 import {combineReducers, createStore} from "redux";
 import {tasksReducer} from "../state/tasks-reducers";
 import {todolistsReducer} from "../state/todolists-reducer";
 import {v1} from "uuid";
 import {TaskPriorities, TaskStatuses} from "../api/todolists-api";
+import {appReducer} from "../app/app-reducer";
 
 const rootReducer = combineReducers({
     tasks: tasksReducer,
-    todoLists: todolistsReducer
+    todoLists: todolistsReducer,
+    app: appReducer
 })
 
 const InitialGlobalState = {
@@ -42,6 +44,9 @@ const InitialGlobalState = {
                 order: 0, priority: TaskPriorities.Hi, startDate: ''
             },
         ]
+    },
+    app: {status: 'loading',
+        error: null
     }
 }
 
