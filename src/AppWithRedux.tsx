@@ -99,6 +99,7 @@ export const AppWithRedux = React.memo(() => {
                                         addTask={addTask}
                                         changeTaskStatus={changeStatus}
                                         filter={tl.filter}
+                                        entityStatus={tl.entityStatus}
                                         removeTodolist={removeTodolist}
                                         changeTaskTitle={changeTaskTitle}
                                         changeTodolistTitle={changeTodolistTitle}

@@ -2,7 +2,7 @@ import {TasksStateType} from "../AppWithRedux";
 import {TaskPriorities, TaskStatuses, TaskType, todolistsApi} from "../api/todolists-api";
 import {AddTodoListAT, RemoveTodoListAT, SetTodoListAT} from "./todolists-reducer";
 import {Dispatch} from "redux";
-import {setAppErrorAC, setAppErrorAT, setAppStatusAC, setAppStatusAT} from "../app/app-reducer";
+import {AppActionsType, setAppErrorAC, setAppStatusAC} from "../app/app-reducer";
 import {AxiosError} from "axios";
 
 
@@ -15,8 +15,7 @@ type ActionType =
     | RemoveTodoListAT
     | SetTodoListAT
     | SetTasksAT
-    | setAppErrorAT
-    | setAppStatusAT
+    | AppActionsType
 
 export type SetTasksAT = {
     type: 'SET-TASKS'
@@ -106,8 +105,13 @@ export const fetchTasksTC = (todolistId: string) => {
         dispatch(setAppStatusAC('loading'))
         todolistsApi.getTasks(todolistId)
             .then((res) => {
-                dispatch(setAppStatusAC('succeeded'))
                 dispatch(setTasksAC(res.data.items, todolistId))
+            })
+            .catch((err) => {
+                dispatch(setAppErrorAC(err[0]))
+            })
+            .finally(() => {
+                dispatch(setAppStatusAC('succeeded'))
             })
     }
 }
@@ -116,16 +120,20 @@ export const removeTaskTC = (todolistId: string, id: string) => {
         dispatch(setAppStatusAC('loading'))
         todolistsApi.deleteTask(todolistId, id)
             .then(res => {
-               if(res.data.resultCode === 0){
-                   dispatch(removeTaskAC(todolistId, id))
-               } else {
-                   dispatch(setAppErrorAC(res.data.messages[0]))
-               }
+                if (res.data.resultCode === 0) {
+                    dispatch(removeTaskAC(todolistId, id))
+                } else {
+                    if (res.data.messages.length > 0) {
+                        dispatch(setAppErrorAC(res.data.messages[0]))
+                    } else {
+                        dispatch(setAppErrorAC('Some error occurred.'))
+                    }
+                }
             })
-            .catch((err: AxiosError)=>{
+            .catch((err: AxiosError) => {
                 dispatch(setAppErrorAC(err.message))
             })
-            .finally(()=>{
+            .finally(() => {
                 dispatch(setAppStatusAC('succeeded'))
             })
     }
@@ -135,8 +143,21 @@ export const addTaskTC = (todolistId: string, title: string) => {
         dispatch(setAppStatusAC('loading'))
         todolistsApi.createTask(todolistId, title)
             .then(res => {
+                if (res.data.resultCode === 0) {
+                    dispatch(addTaskAC(todolistId, res.data.data.item.id, title))
+                } else {
+                    if (res.data.messages.length > 0) {
+                        dispatch(setAppErrorAC(res.data.messages[0]))
+                    } else {
+                        dispatch(setAppErrorAC('Some error occurred.'))
+                    }
+                }
+            })
+            .catch((err: AxiosError) => {
+                dispatch(setAppErrorAC(err.message))
+            })
+            .finally(() => {
                 dispatch(setAppStatusAC('succeeded'))
-                dispatch(addTaskAC(todolistId, res.data.data.item.id, title))
             })
     }
 }
@@ -145,8 +166,21 @@ export const changeTaskTitleTC = (todolistId: string, id: string, newTitle: stri
         dispatch(setAppStatusAC('loading'))
         todolistsApi.updateTask(todolistId, id, newTitle)
             .then(res => {
+                if (res.data.resultCode === 0) {
+                    dispatch(changeTaskTitleAC(todolistId, id, newTitle))
+                } else {
+                    if (res.data.messages.length > 0) {
+                        dispatch(setAppErrorAC(res.data.messages[0]))
+                    } else {
+                        dispatch(setAppErrorAC('Some error occurred.'))
+                    }
+                }
+            })
+            .catch((err: AxiosError) => {
+                dispatch(setAppErrorAC(err.message))
+            })
+            .finally(() => {
                 dispatch(setAppStatusAC('succeeded'))
-                dispatch(changeTaskTitleAC(todolistId, id, newTitle))
             })
     }
 }
