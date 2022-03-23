@@ -62,7 +62,7 @@ export const Todolist = React.memo((props: PropsType) => {
             </IconButton>
 
         </h3>
-        <AddItemForm addItem={addTask} key={props.id}/>
+        <AddItemForm addItem={addTask} key={props.id} entityStatus={props.entityStatus}/>
         <div>
             <ButtonGroup>
                 <Button variant={props.filter === 'all' ? "outlined" : "contained"} color="success"
