@@ -1,12 +1,11 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {Button, TextField} from "@material-ui/core";
-import {RequestStatusType} from "./app/app-reducer";
 
 
 type AddItemFormPropsType = {
     addItem: (title: string) => void
     key: string
-    entityStatus?: RequestStatusType
+    disabled?: boolean
 }
 
 export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
@@ -37,7 +36,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
     return <div>
 
         <TextField id="outlined-basic"
-                   disabled={props.entityStatus === 'loading'}
+                   disabled={props.disabled}
                    error={error}
                    size="small"
                    label={error ? "Title is required" : 'Title'}
@@ -49,7 +48,7 @@ export const AddItemForm = React.memo((props: AddItemFormPropsType) => {
         />
 
         <Button variant="contained"
-                disabled={props.entityStatus === 'loading'}
+                disabled={props.disabled}
                 onClick={addItem}
                 style={{maxWidth: '38px', maxHeight: '38px', minWidth: '38px', minHeight: '38px'}}>+</Button>
 
