@@ -10,6 +10,7 @@ type PropType = {
     removeTask: (taskId: string, todolistId: string) => void
     task: TaskType
     todolistId: string
+    disabled: boolean
 }
 export const Task: React.FC<PropType> = React.memo((props) => {
 
@@ -32,7 +33,7 @@ export const Task: React.FC<PropType> = React.memo((props) => {
     return <li key={props.task.id} className={props.task.status === TaskStatuses.Completed ? "is-done" : ""}>
         <input type="checkbox" onChange={onChangeHandler} checked={props.task.status === TaskStatuses.Completed}/>
         <EditableSpan value={props.task.title} onChange={onTitleChangeHandler}/>
-        <IconButton aria-label="delete" onClick={onClickHandler}>
+        <IconButton aria-label="delete" onClick={onClickHandler} disabled={props.disabled}>
             <Delete/>
         </IconButton>
     </li>

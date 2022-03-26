@@ -31,9 +31,9 @@ export const Todolist = React.memo((props: PropsType) => {
 
     const dispatch = useDispatch()
 
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(fetchTasksTC(props.id))
-    },[])
+    }, [])
 
     const addTask = useCallback((title: string) => {
         props.addTask(title, props.id);
@@ -82,6 +82,7 @@ export const Todolist = React.memo((props: PropsType) => {
                                                 task={t}
                                                 todolistId={props.id}
                                                 key={t.id}
+                                                disabled={props.entityStatus === 'loading'}
                     />
                 )
             }
