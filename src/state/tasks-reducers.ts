@@ -146,7 +146,7 @@ export const addTaskTC = (todolistId: string, title: string) => {
                 if (res.data.resultCode === ResponseStatus.success) {
                     dispatch(addTaskAC(todolistId, res.data.data.item.id, title))
                 } else {
-                    handleServerAppError(dispatch, res.data)
+                    handleServerAppError<{item: TaskType}>(dispatch, res.data)
                 }
             })
             .catch((err: AxiosError) => {
