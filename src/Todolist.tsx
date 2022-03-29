@@ -5,26 +5,26 @@ import {IconButton} from "@material-ui/core";
 import {Delete} from "@mui/icons-material";
 import {Button, ButtonGroup} from "@mui/material";
 import {Task} from "./Task";
-import {TaskStatuses, TaskType} from "./api/todolists-api";
+import {TaskStatuses} from "./api/todolists-api";
 import {FilterValuesType} from "./state/todolists-reducer";
 import {useDispatch} from "react-redux";
-import {fetchTasksTC} from "./state/tasks-reducers";
+import {fetchTasksTC, TaskDomainType} from "./state/tasks-reducers";
 import {RequestStatusType} from "./app/app-reducer";
 
 
 type PropsType = {
     id: string
     title: string
-    tasks: Array<TaskType>
+    tasks: TaskDomainType[]
     removeTodolist: (id: string) => void
     changeFilter: (value: FilterValuesType, todolistId: string) => void
     addTask: (title: string, todolistId: string) => void
     changeTodolistTitle: (id: string, newTitle: string) => void
     filter: FilterValuesType
-    entityStatus: RequestStatusType
     changeTaskTitle: (taskId: string, newTitle: string, todolistId: string) => void
     changeTaskStatus: (id: string, status: TaskStatuses, todolistId: string) => void
     removeTask: (taskId: string, todolistId: string) => void
+    entityStatus: RequestStatusType
 }
 
 export const Todolist = React.memo((props: PropsType) => {
@@ -56,7 +56,8 @@ export const Todolist = React.memo((props: PropsType) => {
 
 
     return <div>
-        <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}/>
+        <h3><EditableSpan value={props.title} onChange={changeTodolistTitle}
+                          disabled={props.entityStatus === 'loading'}/>
             <IconButton aria-label="delete" onClick={removeTodolist} disabled={props.entityStatus === 'loading'}>
                 <Delete/>
             </IconButton>
@@ -82,7 +83,6 @@ export const Todolist = React.memo((props: PropsType) => {
                                                 task={t}
                                                 todolistId={props.id}
                                                 key={t.id}
-                                                disabled={props.entityStatus === 'loading'}
                     />
                 )
             }

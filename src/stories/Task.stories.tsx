@@ -23,7 +23,7 @@ export const TaskBaseExample = (props: any) => {
         <Task
             task={{id: '1', status: TaskStatuses.Completed, title: 'CSS',
                 todoListId: 'todolistId1', addedDate: '', completed: false, deadline: '', description: '',
-                order: 0, priority: TaskPriorities.Hi, startDate: ''}}
+                order: 0, priority: TaskPriorities.Hi, startDate: '', entityStatus: "idle"}}
             removeTask={removeTaskStatusCallback}
             changeTaskStatus={changeTaskStatusStatusCallback}
             changeTaskTitle={changeTaskTitleStatusCallback}
@@ -33,7 +33,7 @@ export const TaskBaseExample = (props: any) => {
         <Task
             task={{id: '2', status: TaskStatuses.New, title: 'JS',
                 todoListId: 'todolistId1', addedDate: '', completed: false, deadline: '', description: '',
-                order: 0, priority: TaskPriorities.Hi, startDate: ''}}
+                order: 0, priority: TaskPriorities.Hi, startDate: '', entityStatus: "idle"}}
             removeTask={removeTaskStatusCallback}
             changeTaskStatus={changeTaskStatusStatusCallback}
             changeTaskTitle={changeTaskTitleStatusCallback}

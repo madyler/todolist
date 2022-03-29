@@ -60,7 +60,6 @@ export type TaskType = {
     todoListId: string
     order: number
     addedDate: string
-
 }
 
 type UpdateTaskModelType = {

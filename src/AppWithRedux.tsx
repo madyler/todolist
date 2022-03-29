@@ -13,18 +13,18 @@ import {
     removeTodolistTC,
     TodolistDomainType
 } from "./state/todolists-reducer";
-import {addTaskTC, changeTaskStatusAC, changeTaskTitleTC, removeTaskTC} from "./state/tasks-reducers";
+import {addTaskTC, changeTaskStatusAC, changeTaskTitleTC, removeTaskTC, TaskDomainType} from "./state/tasks-reducers";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType, useAppSelector} from "./state/store";
 import {v1} from "uuid";
-import {TaskStatuses, TaskType} from "./api/todolists-api";
+import {TaskStatuses} from "./api/todolists-api";
 import {ErrorSnackbar} from "./components/ErrorSnackbar/ErrorSnackbar";
 import {RequestStatusType} from "./app/app-reducer";
 import LinearProgress from '@mui/material/LinearProgress';
 
 
 export type TasksStateType = {
-    [key: string]: Array<TaskType>
+    [key: string]: Array<TaskDomainType>
 }
 
 
