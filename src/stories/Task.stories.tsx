@@ -27,7 +27,6 @@ export const TaskBaseExample = (props: any) => {
             removeTask={removeTaskStatusCallback}
             changeTaskStatus={changeTaskStatusStatusCallback}
             changeTaskTitle={changeTaskTitleStatusCallback}
-            disabled={false}
             todolistId={'todolistID1'}
         />
         <Task
@@ -37,7 +36,6 @@ export const TaskBaseExample = (props: any) => {
             removeTask={removeTaskStatusCallback}
             changeTaskStatus={changeTaskStatusStatusCallback}
             changeTaskTitle={changeTaskTitleStatusCallback}
-            disabled={false}
             todolistId={'todolistID1'}/>
     </>
 }

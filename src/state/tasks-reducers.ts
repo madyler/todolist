@@ -1,5 +1,5 @@
 import {TasksStateType} from "../AppWithRedux";
-import {TaskPriorities, TaskStatuses, TaskType, todolistsApi} from "../api/todolists-api";
+import {TaskStatuses, TaskType, todolistsApi} from "../api/todolists-api";
 import {AddTodoListAT, RemoveTodoListAT, SetTodoListAT} from "./todolists-reducer";
 import {Dispatch} from "redux";
 import {AppActionsType, RequestStatusType, setAppStatusAC} from "../app/app-reducer";
@@ -51,13 +51,12 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             return {...state}
         }
         case "ADD-TASK": {
-            let todolistTasks = state[action.todolistId]
-            state[action.todolistId] = [{
-                id: action.taskId, title: action.taskTitle, status: TaskStatuses.New,
-                todoListId: action.todolistId, addedDate: '', completed: false, deadline: '', description: '',
-                order: 0, priority: TaskPriorities.Low, startDate: '', entityStatus: "idle"
-            }, ...todolistTasks]
-            return {...state}
+            let stateCopy = {...state}
+            let newTask = <TaskDomainType>{...action.task, entityStatus: 'idle'}
+            let tasks = stateCopy[newTask.todoListId]
+            let newTasks = [newTask, ...tasks]
+            stateCopy[newTask.todoListId] = newTasks
+            return stateCopy
         }
         case "CHANGE-STATUS":
             let todolistTasks = state[action.todolistId]
@@ -106,8 +105,8 @@ export enum ResponseStatus {
 //actions
 export const removeTaskAC = (todolistId: string, taskId: string) =>
     ({type: 'REMOVE-TASK', todolistId, taskId} as const)
-export const addTaskAC = (todolistId: string, taskId: string, taskTitle: string) =>
-    ({type: "ADD-TASK", todolistId, taskTitle, taskId} as const)
+export const addTaskAC = (task:TaskType) =>
+    ({type: "ADD-TASK",task} as const)
 export const changeTaskStatusAC = (todolistId: string, taskId: string, status: TaskStatuses) =>
     ({type: "CHANGE-STATUS", todolistId, taskId, status} as const)
 export const changeTaskTitleAC = (todolistId: string, taskId: string, taskTitle: string) =>
@@ -158,7 +157,7 @@ export const addTaskTC = (todolistId: string, title: string) => {
         todolistsApi.createTask(todolistId, title)
             .then(res => {
                 if (res.data.resultCode === ResponseStatus.success) {
-                    dispatch(addTaskAC(todolistId, res.data.data.item.id, title))
+                    dispatch(addTaskAC(res.data.data.item))
                 } else {
                     handleServerAppError<{item: TaskType}>(dispatch, res.data)
                 }
