@@ -21,18 +21,22 @@ export const TaskBaseExample = (props: any) => {
     // @ts-ignore
     return <>
         <Task
-            task={{id: '1', status: TaskStatuses.Completed, title: 'CSS',
+            task={{
+                id: '1', status: TaskStatuses.Completed, title: 'CSS',
                 todoListId: 'todolistId1', addedDate: '', completed: false, deadline: '', description: '',
-                order: 0, priority: TaskPriorities.Hi, startDate: '', entityStatus: "idle"}}
+                order: 0, priority: TaskPriorities.Hi, startDate: '', entityStatus: "idle"
+            }}
             removeTask={removeTaskStatusCallback}
             changeTaskStatus={changeTaskStatusStatusCallback}
             changeTaskTitle={changeTaskTitleStatusCallback}
             todolistId={'todolistID1'}
         />
         <Task
-            task={{id: '2', status: TaskStatuses.New, title: 'JS',
+            task={{
+                id: '2', status: TaskStatuses.New, title: 'JS',
                 todoListId: 'todolistId1', addedDate: '', completed: false, deadline: '', description: '',
-                order: 0, priority: TaskPriorities.Hi, startDate: '', entityStatus: "idle"}}
+                order: 0, priority: TaskPriorities.Hi, startDate: '', entityStatus: "idle"
+            }}
             removeTask={removeTaskStatusCallback}
             changeTaskStatus={changeTaskStatusStatusCallback}
             changeTaskTitle={changeTaskTitleStatusCallback}

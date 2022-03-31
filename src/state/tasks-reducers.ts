@@ -34,7 +34,7 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
     switch (action.type) {
         case "SET-TASKS": {
             let copyState = {...state}
-            copyState[action.todolistId] = action.tasks.map(t=>({...t, entityStatus: 'idle'}))
+            copyState[action.todolistId] = action.tasks.map(t => ({...t, entityStatus: 'idle'}))
             return copyState
         }
         case "SET-TODOLISTS": {
@@ -82,12 +82,12 @@ export const tasksReducer = (state: TasksStateType = initialState, action: Actio
             delete state[action.id]
             return {...state}
         }
-        case "CHANGE-TASK-ENTITY-STATUS":{
+        case "CHANGE-TASK-ENTITY-STATUS": {
             let todolistTasks = state[action.todolistId]
             state[action.todolistId] = todolistTasks
-                .map(t=>t.id===action.taskId
-                    ?{...t, entityStatus: action.entityStatus}
-                    :t)
+                .map(t => t.id === action.taskId
+                    ? {...t, entityStatus: action.entityStatus}
+                    : t)
             return ({...state})
         }
         default:
@@ -105,14 +105,19 @@ export enum ResponseStatus {
 //actions
 export const removeTaskAC = (todolistId: string, taskId: string) =>
     ({type: 'REMOVE-TASK', todolistId, taskId} as const)
-export const addTaskAC = (task:TaskType) =>
-    ({type: "ADD-TASK",task} as const)
+export const addTaskAC = (task: TaskType) =>
+    ({type: "ADD-TASK", task} as const)
 export const changeTaskStatusAC = (todolistId: string, taskId: string, status: TaskStatuses) =>
     ({type: "CHANGE-STATUS", todolistId, taskId, status} as const)
 export const changeTaskTitleAC = (todolistId: string, taskId: string, taskTitle: string) =>
     ({type: "CHANGE-TITLE", todolistId, taskId, taskTitle} as const)
 export const setTasksAC = (tasks: TaskType[], todolistId: string) => ({type: "SET-TASKS", tasks, todolistId} as const)
-export const changeTaskEntityStatusAC = (todolistId: string, taskId: string, entityStatus: RequestStatusType) => ({type: 'CHANGE-TASK-ENTITY-STATUS', todolistId, taskId, entityStatus} as const)
+export const changeTaskEntityStatusAC = (todolistId: string, taskId: string, entityStatus: RequestStatusType) => ({
+    type: 'CHANGE-TASK-ENTITY-STATUS',
+    todolistId,
+    taskId,
+    entityStatus
+} as const)
 
 //thunks
 export const fetchTasksTC = (todolistId: string) => {
@@ -144,7 +149,7 @@ export const removeTaskTC = (todolistId: string, taskId: string) => {
             })
             .catch((err: AxiosError) => {
                 handleServerNetworkError(dispatch, err.message)
-                dispatch(changeTaskEntityStatusAC(todolistId, taskId,'succeeded'))
+                dispatch(changeTaskEntityStatusAC(todolistId, taskId, 'succeeded'))
             })
             .finally(() => {
                 dispatch(setAppStatusAC('succeeded'))
@@ -159,7 +164,7 @@ export const addTaskTC = (todolistId: string, title: string) => {
                 if (res.data.resultCode === ResponseStatus.success) {
                     dispatch(addTaskAC(res.data.data.item))
                 } else {
-                    handleServerAppError<{item: TaskType}>(dispatch, res.data)
+                    handleServerAppError<{ item: TaskType }>(dispatch, res.data)
                 }
             })
             .catch((err: AxiosError) => {
